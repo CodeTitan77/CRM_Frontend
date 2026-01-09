@@ -13,7 +13,7 @@ import SalesManagement from './pages/SalesManagement';
 function App() {
   return (
     <Routes>
-      <Route path="/home" element={<Home/>}/>
+      <Route path="/" element={<Home/>}/>
       <Route path="/addagent" element={<AddAgent/>}/>
       <Route path="/addlead" element={<AddLead/>}/>
       <Route path="/leadlist" element={<LeadList/>}/>
