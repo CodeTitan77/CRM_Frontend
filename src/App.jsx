@@ -17,7 +17,7 @@ function App() {
       <Route path="/addagent" element={<AddAgent/>}/>
       <Route path="/addlead" element={<AddLead/>}/>
       <Route path="/leadlist" element={<LeadList/>}/>
-      <Route path="/leadmanagement" element={<LeadManagement/>}/>
+      <Route path="/leadmanagement/:leadId" element={<LeadManagement/>}/>
       <Route path="/leadstatus" element={<LeadStatus/>}/>
       <Route path="/reports" element={<Reports/>}/>
       <Route path="/salesagentview" element={<SalesAgentView/>}/>

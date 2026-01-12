@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Spinner } from "@/components/ui/spinner"
 import {
   Select,
@@ -20,6 +21,8 @@ const Home = () => {
   const [allLeads, setAllLeads] = useState([]);
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState('');
+  const navigate=useNavigate();
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -67,6 +70,9 @@ const Home = () => {
     };
     return colors[status] || 'bg-gray-500';
   };
+  const manageRoute=(id)=>{
+     navigate(`/leadmanagement/${id}`);
+  }
 
   const getPriorityColor = (priority) => {
     const colors = {
@@ -124,7 +130,7 @@ const Home = () => {
           </h1>
           <p className="text-muted-foreground mt-2">Manage and track your sales leads</p>
         </div>
-        <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
+        <Button onClick={()=>navigate('/addlead')} className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
           Add New Lead
         </Button>
       </div>
@@ -183,6 +189,7 @@ const Home = () => {
           {leads && leads.length > 0 ? (
             leads.map((lead) => (
               <Card 
+               onClick={()=>manageRoute(lead._id)}
                 key={lead._id} 
                 className="hover:shadow-2xl transition-all cursor-pointer border-2 hover:border-primary/50 bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 hover:scale-[1.02]"
               >
