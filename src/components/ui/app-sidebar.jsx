@@ -1,4 +1,4 @@
-import { LayoutDashboard, Users, UserCog, BarChart3 } from "lucide-react"
+import { LayoutDashboard, Users, UserCog, BarChart3, List, TrendingUp, Eye, Settings } from "lucide-react"
 import { Link } from "react-router-dom"
 import {
   Sidebar,
@@ -21,10 +21,10 @@ const items = [
   {
     title: "Leads",
     url: "/leadlist",
-    icon: Users,
+    icon: List,
   },
   {
-    title: "Sales Management",
+    title: "Sales Agents",
     url: "/salesmanagement",
     icon: UserCog,
   },
@@ -32,6 +32,21 @@ const items = [
     title: "Reports",
     url: "/reports",
     icon: BarChart3,
+  },
+  {
+    title: "Lead Status Wise",
+    url: "/leadstatus",
+    icon: TrendingUp,
+  },
+  {
+    title: "Sales Agent View",
+    url: "/salesagentview",
+    icon: Eye,
+  },
+  {
+    title: "Settings",
+    url: "/settings",
+    icon: Settings,
   },
 ]
 

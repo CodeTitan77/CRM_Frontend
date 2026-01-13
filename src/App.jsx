@@ -9,13 +9,15 @@ import LeadStatus from './pages/LeadStatus';
 import SalesAgentView from './pages/SalesAgentView';
 import Reports from './pages/Reports';
 import SalesManagement from './pages/SalesManagement';
-
+import Settings from './pages/Settings';
 function App() {
   return (
     <Routes>
       <Route path="/" element={<Home/>}/>
       <Route path="/addagent" element={<AddAgent/>}/>
       <Route path="/addlead" element={<AddLead/>}/>
+     <Route path="/settings" element={<Settings/>}/>
+
       <Route path="/leadlist" element={<LeadList/>}/>
       <Route path="/leadmanagement/:leadId" element={<LeadManagement/>}/>
       <Route path="/leadstatus" element={<LeadStatus/>}/>
