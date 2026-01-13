@@ -29,7 +29,7 @@ const AddAgent = () => {
 
     try {
       setLoading(true);
-      const res = await fetch('http://localhost:7777/agents', {
+      const res = await fetch('https://crm-backend-beta-two.vercel.app/agents', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

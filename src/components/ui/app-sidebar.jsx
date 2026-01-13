@@ -19,7 +19,7 @@ const items = [
     icon: LayoutDashboard,
   },
   {
-    title: "Leads",
+    title: "Lead List",
     url: "/leadlist",
     icon: List,
   },

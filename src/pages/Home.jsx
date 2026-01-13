@@ -28,7 +28,7 @@ const Home = () => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const res = await fetch('http://localhost:7777/leads');
+        const res = await fetch('https://crm-backend-beta-two.vercel.app/leads');
         const results = await res.json();
         
         setAllLeads(results?.data || []);

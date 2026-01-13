@@ -47,8 +47,8 @@ const Reports = () => {
       try {
         setLoading(true);
 
-        const pipelineRes = await fetch('http://localhost:7777/report/pipeline');
-        const totalLeadsRes = await fetch('http://localhost:7777/leads');
+        const pipelineRes = await fetch('https://crm-backend-beta-two.vercel.app/report/pipeline');
+        const totalLeadsRes = await fetch('https://crm-backend-beta-two.vercel.app/leads');
         const pipelineResult = await pipelineRes.json();
         const totalLeadsResult = await totalLeadsRes.json();
 
@@ -60,7 +60,7 @@ const Reports = () => {
           { name: 'other', count: totalCount - pipelineCount, fill: "var(--color-other)" }
         ]);
 
-        const agentsRes = await fetch('http://localhost:7777/agents');
+        const agentsRes = await fetch('https://crm-backend-beta-two.vercel.app/agents');
         const agentsResult = await agentsRes.json();
         const agents = agentsResult?.data || [];
 
@@ -68,7 +68,7 @@ const Reports = () => {
         for (const agent of agents) {
           const params = new URLSearchParams();
           params.append('salesAgent', agent._id);
-          const res = await fetch(`http://localhost:7777/leads?${params.toString()}`);
+          const res = await fetch(`https://crm-backend-beta-two.vercel.app/leads?${params.toString()}`);
           const data = await res.json();
           const count = data?.data?.length || 0;
           
@@ -86,7 +86,7 @@ const Reports = () => {
         for (let i = 0; i < statuses.length; i++) {
           const params = new URLSearchParams();
           params.append('status', statuses[i]);
-          const res = await fetch(`http://localhost:7777/leads?${params.toString()}`);
+          const res = await fetch(`https://crm-backend-beta-two.vercel.app/leads?${params.toString()}`);
           const data = await res.json();
           const count = data?.data?.length || 0;
           

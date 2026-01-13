@@ -15,6 +15,8 @@ import {
 } from "@/components/ui/select"
 import { ArrowLeft, Edit2, Save, X, User, Calendar, TrendingUp, Target, Clock, MessageSquare } from "lucide-react"
 
+const API_BASE_URL = 'https://crm-backend-beta-two.vercel.app';
+
 const LeadManagement = () => {
   const [lead, setLead] = useState({});
   const { leadId } = useParams();
@@ -38,9 +40,9 @@ const LeadManagement = () => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const res = await fetch(`http://localhost:7777/leads/leadId/${leadId}`);
-        const res2 = await fetch(`http://localhost:7777/agents`);
-        const res3 = await fetch(`http://localhost:7777/leads/comments/${leadId}`);
+        const res = await fetch(`${API_BASE_URL}/leads/leadId/${leadId}`);
+        const res2 = await fetch(`${API_BASE_URL}/agents`);
+        const res3 = await fetch(`${API_BASE_URL}/leads/comments/${leadId}`);
         const data = await res.json();
         const agentsData = await res2.json();
         const commentsData = await res3.json();
@@ -74,7 +76,7 @@ const LeadManagement = () => {
         updatedLead.timeToClose = parseInt(newTimeToClose);
       }
       
-      const res = await fetch(`http://localhost:7777/leads/${leadId}`, {
+      const res = await fetch(`${API_BASE_URL}/leads/${leadId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -100,7 +102,7 @@ const LeadManagement = () => {
 
   const manageComment = async () => {
     try {
-      const res = await fetch(`http://localhost:7777/leads/comments/${leadId}`, {
+      const res = await fetch(`${API_BASE_URL}/leads/comments/${leadId}`, {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',
@@ -111,7 +113,7 @@ const LeadManagement = () => {
       if (res.ok) {
         setText("");
         setAuthor("");
-        const res3 = await fetch(`http://localhost:7777/leads/comments/${leadId}`);
+        const res3 = await fetch(`${API_BASE_URL}/leads/comments/${leadId}`);
         const commentsData = await res3.json();
         setComments(commentsData?.data);
         setnewCom(false);

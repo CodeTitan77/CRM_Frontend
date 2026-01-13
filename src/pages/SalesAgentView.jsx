@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Spinner } from "@/components/ui/spinner"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -10,6 +11,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import LeadCard from "@/components/LeadCard"
+
+const API_BASE_URL = 'https://crm-backend-beta-two.vercel.app';
 
 const SalesAgentView = () => {
   const [agents, setAgents] = useState([]);
@@ -20,11 +24,13 @@ const SalesAgentView = () => {
   const [priority, setPriority] = useState('');
   const [sort, setSort] = useState('');
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     const fetchAgents = async () => {
       try {
         setLoading(true);
-        const res = await fetch('http://localhost:7777/agents');
+        const res = await fetch(`${API_BASE_URL}/agents`);
         const data = await res.json();
         setAgents(data?.data || []);
         setLoading(false);
@@ -42,7 +48,7 @@ const SalesAgentView = () => {
 
       try {
         setLoading(true);
-        const baseUrl = 'http://localhost:7777/leads';
+        const baseUrl = `${API_BASE_URL}/leads`;
         const leadsData = {};
 
         for (const agent of agents) {
@@ -76,22 +82,8 @@ const SalesAgentView = () => {
     fetchLeadsByAgent();
   }, [agents, status, priority, sort]);
 
-  const getPriorityColor = (priority) => {
-    if (priority === 'High') return 'destructive';
-    if (priority === 'Medium') return 'default';
-    if (priority === 'Low') return 'secondary';
-    return 'default';
-  };
-
-  const getStatusColor = (status) => {
-    const colors = {
-      'New': 'bg-blue-500',
-      'Contacted': 'bg-yellow-500',
-      'Qualified': 'bg-emerald-500',
-      'Proposal Sent': 'bg-orange-500',
-      'Closed': 'bg-green-500'
-    };
-    return colors[status] || 'bg-gray-500';
+  const handleLeadClick = (id) => {
+    navigate(`/leadmanagement/${id}`);
   };
 
   return (
@@ -177,23 +169,11 @@ const SalesAgentView = () => {
                   {leads.length > 0 ? (
                     <div className="space-y-3">
                       {leads.map((lead) => (
-                        <Card key={lead._id} className="p-4 hover:shadow-md transition-shadow">
-                          <div className="flex items-center justify-between">
-                            <div>
-                              <h4 className="font-semibold">{lead.name}</h4>
-                              <div className="flex items-center gap-2 mt-1">
-                                <div className={`w-2 h-2 rounded-full ${getStatusColor(lead.status)}`}></div>
-                                <span className="text-sm text-muted-foreground">{lead.status}</span>
-                              </div>
-                              <p className="text-xs text-muted-foreground mt-1">
-                                {lead.timeToClose} days to close
-                              </p>
-                            </div>
-                            <Badge variant={getPriorityColor(lead.priority)}>
-                              {lead.priority}
-                            </Badge>
-                          </div>
-                        </Card>
+                        <LeadCard 
+                          key={lead._id} 
+                          lead={lead} 
+                          onClick={() => handleLeadClick(lead._id)}
+                        />
                       ))}
                     </div>
                   ) : (

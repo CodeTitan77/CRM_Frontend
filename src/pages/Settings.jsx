@@ -16,7 +16,7 @@ const Settings = () => {
      const fetchLeads = async () => {
     try {
       setLoading(true);
-      const res = await fetch('http://localhost:7777/leads');
+      const res = await fetch('https://crm-backend-beta-two.vercel.app/leads');
       const data = await res.json();
       setLeads(data?.data || []);
       setLoading(false);
@@ -33,7 +33,7 @@ const Settings = () => {
 
   const handleDelete = async (id) => {
     try {
-      const res = await fetch(`http://localhost:7777/leads/${id}`, {
+      const res = await fetch(`https://crm-backend-beta-two.vercel.app/leads/${id}`, {
         method: 'DELETE',
       });
 
@@ -45,7 +45,7 @@ const Settings = () => {
          const fetchLeads = async () => {
     try {
       setLoading(true);
-      const res = await fetch('http://localhost:7777/leads');
+      const res = await fetch('https://crm-backend-beta-two.vercel.app/leads');
       const data = await res.json();
       setLeads(data?.data || []);
       setLoading(false);

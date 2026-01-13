@@ -36,8 +36,9 @@ const AddLead = () => {
   useEffect(() => {
     const fetchAgents = async () => {
       try {
-        const res = await fetch('http://localhost:7777/agents');
+        const res = await fetch('https://crm-backend-beta-two.vercel.app/agents');
         const data = await res.json();
+        console.log(data?.data);
         setAgents(data?.data || []);
       } catch (error) {
         console.log(error.message);
@@ -70,7 +71,7 @@ const AddLead = () => {
 
     try {
       setLoading(true);
-      const res = await fetch('http://localhost:7777/leads', {
+      const res = await fetch('https://crm-backend-beta-two.vercel.app/leads', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

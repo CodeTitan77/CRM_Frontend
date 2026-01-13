@@ -28,7 +28,7 @@ const SalesAgentView = () => {
     const fetchAgents = async () => {
       try {
         setLoading(true);
-        const res = await fetch('http://localhost:7777/agents');
+        const res = await fetch('https://crm-backend-beta-two.vercel.app/agents');
         const data = await res.json();
         setAgents(data?.data || []);
         setLoading(false);
@@ -46,7 +46,7 @@ const SalesAgentView = () => {
 
       try {
         setLoading(true);
-        const baseUrl = 'http://localhost:7777/leads';
+        const baseUrl = 'https://crm-backend-beta-two.vercel.app/leads';
         const leadsData = {};
 
         for (const agent of agents) {

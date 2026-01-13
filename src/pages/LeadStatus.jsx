@@ -31,7 +31,7 @@ const LeadStatus = () => {
   useEffect(() => {
     const fetchAgents = async () => {
       try {
-        const res = await fetch('http://localhost:7777/agents');
+        const res = await fetch('https://crm-backend-beta-two.vercel.app/agents');
         const data = await res.json();
         setAgents(data?.data || []);
       } catch (error) {
@@ -45,7 +45,7 @@ const LeadStatus = () => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const baseUrl = 'http://localhost:7777/leads';
+        const baseUrl = 'https://crm-backend-beta-two.vercel.app/leads';
         
         const params = new URLSearchParams();
         if (salesAgent) params.append('salesAgent', salesAgent);
