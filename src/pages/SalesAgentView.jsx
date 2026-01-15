@@ -20,6 +20,7 @@ const SalesAgentView = () => {
   const [agentLeads, setAgentLeads] = useState({});
   const [loading, setLoading] = useState(false);
   
+  const [selectedAgent, setSelectedAgent] = useState('All');
   const [status, setStatus] = useState('');
   const [priority, setPriority] = useState('');
   const [sort, setSort] = useState('');
@@ -97,7 +98,24 @@ const SalesAgentView = () => {
 
       <Card>
         <CardContent className="p-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="space-y-2">
+              <p className="text-sm font-medium">Select Agent</p>
+              <Select value={selectedAgent} onValueChange={setSelectedAgent}>
+                <SelectTrigger>
+                  <SelectValue placeholder="All Agents" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="All">All Agents</SelectItem>
+                  {agents.map((agent) => (
+                    <SelectItem key={agent._id} value={agent._id}>
+                      {agent.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
             <div className="space-y-2">
               <p className="text-sm font-medium">Status</p>
               <Select value={status} onValueChange={(value) => setStatus(value === "all" ? "" : value)}>
@@ -152,37 +170,72 @@ const SalesAgentView = () => {
         </div>
       ) : (
         <div className="space-y-6">
-          {agents.map((agent) => {
-            const leads = agentLeads[agent._id] || [];
-            return (
-              <Card key={agent._id} className="border-l-4 border-l-blue-500">
-                <CardHeader className="border-b bg-blue-50 dark:bg-blue-950/20">
-                  <CardTitle className="text-lg flex items-center justify-between">
-                    <div>
-                      <p className="font-semibold">{agent.name}</p>
-                      <p className="text-sm text-muted-foreground font-normal">{agent.email}</p>
-                    </div>
-                    <Badge variant="secondary">{leads.length} leads</Badge>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="p-4">
-                  {leads.length > 0 ? (
-                    <div className="space-y-3">
-                      {leads.map((lead) => (
-                        <LeadCard 
-                          key={lead._id} 
-                          lead={lead} 
-                          onClick={() => handleLeadClick(lead._id)}
-                        />
-                      ))}
-                    </div>
-                  ) : (
-                    <p className="text-sm text-muted-foreground text-center py-4">No leads</p>
-                  )}
-                </CardContent>
-              </Card>
-            );
-          })}
+          {selectedAgent === 'All' ? (
+            agents.map((agent) => {
+              const leads = agentLeads[agent._id] || [];
+              return (
+                <Card key={agent._id} className="border-l-4 border-l-blue-500">
+                  <CardHeader className="border-b bg-blue-50 dark:bg-blue-950/20">
+                    <CardTitle className="text-lg flex items-center justify-between">
+                      <div>
+                        <p className="font-semibold">{agent.name}</p>
+                        <p className="text-sm text-muted-foreground font-normal">{agent.email}</p>
+                      </div>
+                      <Badge variant="secondary">{leads.length} leads</Badge>
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-4">
+                    {leads.length > 0 ? (
+                      <div className="space-y-3">
+                        {leads.map((lead) => (
+                          <LeadCard 
+                            key={lead._id} 
+                            lead={lead} 
+                            onClick={() => handleLeadClick(lead._id)}
+                          />
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-sm text-muted-foreground text-center py-4">No leads</p>
+                    )}
+                  </CardContent>
+                </Card>
+              );
+            })
+          ) : (
+            (() => {
+              const agent = agents.find(a => a._id === selectedAgent);
+              const leads = agentLeads[selectedAgent] || [];
+              return agent ? (
+                <Card className="border-l-4 border-l-blue-500">
+                  <CardHeader className="border-b bg-blue-50 dark:bg-blue-950/20">
+                    <CardTitle className="text-lg flex items-center justify-between">
+                      <div>
+                        <p className="font-semibold">{agent.name}</p>
+                        <p className="text-sm text-muted-foreground font-normal">{agent.email}</p>
+                      </div>
+                      <Badge variant="secondary">{leads.length} leads</Badge>
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-4">
+                    {leads.length > 0 ? (
+                      <div className="space-y-3">
+                        {leads.map((lead) => (
+                          <LeadCard 
+                            key={lead._id} 
+                            lead={lead} 
+                            onClick={() => handleLeadClick(lead._id)}
+                          />
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-sm text-muted-foreground text-center py-4">No leads</p>
+                    )}
+                  </CardContent>
+                </Card>
+              ) : null;
+            })()
+          )}
         </div>
       )}
     </div>

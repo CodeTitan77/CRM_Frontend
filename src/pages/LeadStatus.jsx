@@ -13,6 +13,8 @@ import {
 } from "@/components/ui/select"
 import LeadCard from "@/components/LeadCard"
 
+const API_BASE_URL = 'https://crm-backend-beta-two.vercel.app';
+
 const LeadStatus = () => {
   const [newLeads, setNewLeads] = useState([]);
   const [contactedLeads, setContactedLeads] = useState([]);
@@ -22,6 +24,7 @@ const LeadStatus = () => {
   const [agents, setAgents] = useState([]);
   const [loading, setLoading] = useState(false);
   
+  const [selectedStatus, setSelectedStatus] = useState('All');
   const [salesAgent, setSalesAgent] = useState('');
   const [priority, setPriority] = useState('');
   const [sort, setSort] = useState('');
@@ -31,7 +34,7 @@ const LeadStatus = () => {
   useEffect(() => {
     const fetchAgents = async () => {
       try {
-        const res = await fetch('https://crm-backend-beta-two.vercel.app/agents');
+        const res = await fetch(`${API_BASE_URL}/agents`);
         const data = await res.json();
         setAgents(data?.data || []);
       } catch (error) {
@@ -45,7 +48,7 @@ const LeadStatus = () => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const baseUrl = 'https://crm-backend-beta-two.vercel.app/leads';
+        const baseUrl = `${API_BASE_URL}/leads`;
         
         const params = new URLSearchParams();
         if (salesAgent) params.append('salesAgent', salesAgent);
@@ -127,7 +130,24 @@ const LeadStatus = () => {
 
       <Card>
         <CardContent className="p-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="space-y-2">
+              <p className="text-sm font-medium">Select Status</p>
+              <Select value={selectedStatus} onValueChange={setSelectedStatus}>
+                <SelectTrigger>
+                  <SelectValue placeholder="All" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="All">All</SelectItem>
+                  <SelectItem value="New">New</SelectItem>
+                  <SelectItem value="Contacted">Contacted</SelectItem>
+                  <SelectItem value="Qualified">Qualified</SelectItem>
+                  <SelectItem value="Proposal Sent">Proposal Sent</SelectItem>
+                  <SelectItem value="Closed">Closed</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
             <div className="space-y-2">
               <p className="text-sm font-medium">Sales Agent</p>
               <Select value={salesAgent} onValueChange={(value) => setSalesAgent(value === "all" ? "" : value)}>
@@ -182,125 +202,135 @@ const LeadStatus = () => {
         </div>
       ) : (
         <div className="space-y-6">
-          <Card className="border-l-4 border-l-blue-500">
-            <CardHeader className="border-b bg-blue-50 dark:bg-blue-950/20">
-              <CardTitle className="text-lg flex items-center justify-between">
-                New
-                <Badge variant="secondary">{newLeads.length}</Badge>
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="p-4">
-              {newLeads.length > 0 ? (
-                <div className="space-y-3">
-                  {newLeads.map((lead) => (
-                    <LeadCard 
-                      key={lead._id} 
-                      lead={lead} 
-                      onClick={() => handleLeadClick(lead._id)}
-                    />
-                  ))}
-                </div>
-              ) : (
-                <p className="text-sm text-muted-foreground text-center py-4">No leads</p>
-              )}
-            </CardContent>
-          </Card>
+          {(selectedStatus === 'All' || selectedStatus === 'New') && (
+            <Card className="border-l-4 border-l-blue-500">
+              <CardHeader className="border-b bg-blue-50 dark:bg-blue-950/20">
+                <CardTitle className="text-lg flex items-center justify-between">
+                  New
+                  <Badge variant="secondary">{newLeads.length}</Badge>
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-4">
+                {newLeads.length > 0 ? (
+                  <div className="space-y-3">
+                    {newLeads.map((lead) => (
+                      <LeadCard 
+                        key={lead._id} 
+                        lead={lead} 
+                        onClick={() => handleLeadClick(lead._id)}
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-sm text-muted-foreground text-center py-4">No leads</p>
+                )}
+              </CardContent>
+            </Card>
+          )}
 
-          <Card className="border-l-4 border-l-yellow-500">
-            <CardHeader className="border-b bg-yellow-50 dark:bg-yellow-950/20">
-              <CardTitle className="text-lg flex items-center justify-between">
-                Contacted
-                <Badge variant="secondary">{contactedLeads.length}</Badge>
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="p-4">
-              {contactedLeads.length > 0 ? (
-                <div className="space-y-3">
-                  {contactedLeads.map((lead) => (
-                    <LeadCard 
-                      key={lead._id} 
-                      lead={lead} 
-                      onClick={() => handleLeadClick(lead._id)}
-                    />
-                  ))}
-                </div>
-              ) : (
-                <p className="text-sm text-muted-foreground text-center py-4">No leads</p>
-              )}
-            </CardContent>
-          </Card>
+          {(selectedStatus === 'All' || selectedStatus === 'Contacted') && (
+            <Card className="border-l-4 border-l-yellow-500">
+              <CardHeader className="border-b bg-yellow-50 dark:bg-yellow-950/20">
+                <CardTitle className="text-lg flex items-center justify-between">
+                  Contacted
+                  <Badge variant="secondary">{contactedLeads.length}</Badge>
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-4">
+                {contactedLeads.length > 0 ? (
+                  <div className="space-y-3">
+                    {contactedLeads.map((lead) => (
+                      <LeadCard 
+                        key={lead._id} 
+                        lead={lead} 
+                        onClick={() => handleLeadClick(lead._id)}
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-sm text-muted-foreground text-center py-4">No leads</p>
+                )}
+              </CardContent>
+            </Card>
+          )}
 
-          <Card className="border-l-4 border-l-emerald-500">
-            <CardHeader className="border-b bg-emerald-50 dark:bg-emerald-950/20">
-              <CardTitle className="text-lg flex items-center justify-between">
-                Qualified
-                <Badge variant="secondary">{qualifiedLeads.length}</Badge>
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="p-4">
-              {qualifiedLeads.length > 0 ? (
-                <div className="space-y-3">
-                  {qualifiedLeads.map((lead) => (
-                    <LeadCard 
-                      key={lead._id} 
-                      lead={lead} 
-                      onClick={() => handleLeadClick(lead._id)}
-                    />
-                  ))}
-                </div>
-              ) : (
-                <p className="text-sm text-muted-foreground text-center py-4">No leads</p>
-              )}
-            </CardContent>
-          </Card>
+          {(selectedStatus === 'All' || selectedStatus === 'Qualified') && (
+            <Card className="border-l-4 border-l-emerald-500">
+              <CardHeader className="border-b bg-emerald-50 dark:bg-emerald-950/20">
+                <CardTitle className="text-lg flex items-center justify-between">
+                  Qualified
+                  <Badge variant="secondary">{qualifiedLeads.length}</Badge>
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-4">
+                {qualifiedLeads.length > 0 ? (
+                  <div className="space-y-3">
+                    {qualifiedLeads.map((lead) => (
+                      <LeadCard 
+                        key={lead._id} 
+                        lead={lead} 
+                        onClick={() => handleLeadClick(lead._id)}
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-sm text-muted-foreground text-center py-4">No leads</p>
+                )}
+              </CardContent>
+            </Card>
+          )}
 
-          <Card className="border-l-4 border-l-orange-500">
-            <CardHeader className="border-b bg-orange-50 dark:bg-orange-950/20">
-              <CardTitle className="text-lg flex items-center justify-between">
-                Proposal Sent
-                <Badge variant="secondary">{proposalLeads.length}</Badge>
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="p-4">
-              {proposalLeads.length > 0 ? (
-                <div className="space-y-3">
-                  {proposalLeads.map((lead) => (
-                    <LeadCard 
-                      key={lead._id} 
-                      lead={lead} 
-                      onClick={() => handleLeadClick(lead._id)}
-                    />
-                  ))}
-                </div>
-              ) : (
-                <p className="text-sm text-muted-foreground text-center py-4">No leads</p>
-              )}
-            </CardContent>
-          </Card>
+          {(selectedStatus === 'All' || selectedStatus === 'Proposal Sent') && (
+            <Card className="border-l-4 border-l-orange-500">
+              <CardHeader className="border-b bg-orange-50 dark:bg-orange-950/20">
+                <CardTitle className="text-lg flex items-center justify-between">
+                  Proposal Sent
+                  <Badge variant="secondary">{proposalLeads.length}</Badge>
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-4">
+                {proposalLeads.length > 0 ? (
+                  <div className="space-y-3">
+                    {proposalLeads.map((lead) => (
+                      <LeadCard 
+                        key={lead._id} 
+                        lead={lead} 
+                        onClick={() => handleLeadClick(lead._id)}
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-sm text-muted-foreground text-center py-4">No leads</p>
+                )}
+              </CardContent>
+            </Card>
+          )}
 
-          <Card className="border-l-4 border-l-green-500">
-            <CardHeader className="border-b bg-green-50 dark:bg-green-950/20">
-              <CardTitle className="text-lg flex items-center justify-between">
-                Closed
-                <Badge variant="secondary">{closedLeads.length}</Badge>
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="p-4">
-              {closedLeads.length > 0 ? (
-                <div className="space-y-3">
-                  {closedLeads.map((lead) => (
-                    <LeadCard 
-                      key={lead._id} 
-                      lead={lead} 
-                      onClick={() => handleLeadClick(lead._id)}
-                    />
-                  ))}
-                </div>
-              ) : (
-                <p className="text-sm text-muted-foreground text-center py-4">No leads</p>
-              )}
-            </CardContent>
-          </Card>
+          {(selectedStatus === 'All' || selectedStatus === 'Closed') && (
+            <Card className="border-l-4 border-l-green-500">
+              <CardHeader className="border-b bg-green-50 dark:bg-green-950/20">
+                <CardTitle className="text-lg flex items-center justify-between">
+                  Closed
+                  <Badge variant="secondary">{closedLeads.length}</Badge>
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-4">
+                {closedLeads.length > 0 ? (
+                  <div className="space-y-3">
+                    {closedLeads.map((lead) => (
+                      <LeadCard 
+                        key={lead._id} 
+                        lead={lead} 
+                        onClick={() => handleLeadClick(lead._id)}
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-sm text-muted-foreground text-center py-4">No leads</p>
+                )}
+              </CardContent>
+            </Card>
+          )}
         </div>
       )}
     </div>
