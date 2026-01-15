@@ -46,15 +46,15 @@ const SalesManagement = () => {
   }, []);
 
   return (
-    <div className="container mx-auto p-6 max-w-6xl space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold">Sales Management</h1>
+    <div className="container mx-auto p-4 md:p-6 max-w-6xl space-y-4 md:space-y-6">
+      <div className="flex flex-col items-center gap-4 md:flex-row md:justify-between">
+        <div className="text-center md:text-left">
+          <h1 className="text-2xl md:text-3xl font-bold">Sales Management</h1>
           <p className="text-muted-foreground mt-1">Manage your sales agents</p>
         </div>
         <Button 
           onClick={() => navigate('/addagent')}
-          className="gap-2 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 dark:from-blue-500 dark:to-cyan-500"
+          className="w-full md:w-auto gap-2 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 dark:from-blue-500 dark:to-cyan-500"
         >
           <Users className="h-4 w-4" />
           Add New Agent
@@ -76,13 +76,13 @@ const SalesManagement = () => {
                 className="hover:shadow-lg transition-all border-l-4 border-l-blue-500"
               >
                 <CardContent className="p-4">
-                  <div className="flex items-center gap-4">
-                    <div className="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-full">
-                      <Users className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                  <div className="flex items-center gap-3 md:gap-4">
+                    <div className="p-2 md:p-3 bg-blue-100 dark:bg-blue-900/30 rounded-full shrink-0">
+                      <Users className="h-4 w-4 md:h-5 md:w-5 text-blue-600 dark:text-blue-400" />
                     </div>
-                    <div>
-                      <h3 className="text-lg font-semibold">{agent.name}</h3>
-                      <p className="text-sm text-muted-foreground">{agent.email}</p>
+                    <div className="min-w-0 flex-1">
+                      <h3 className="text-base md:text-lg font-semibold truncate">{agent.name}</h3>
+                      <p className="text-xs md:text-sm text-muted-foreground truncate">{agent.email}</p>
                     </div>
                   </div>
                 </CardContent>
@@ -90,10 +90,10 @@ const SalesManagement = () => {
             ))
           ) : (
             <Card className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900">
-              <CardContent className="flex flex-col items-center justify-center p-12">
-                <Users className="h-12 w-12 text-muted-foreground mb-4" />
-                <p className="text-lg font-medium">No agents found</p>
-                <p className="text-sm text-muted-foreground mt-2">
+              <CardContent className="flex flex-col items-center justify-center p-8 md:p-12">
+                <Users className="h-10 w-10 md:h-12 md:w-12 text-muted-foreground mb-4" />
+                <p className="text-base md:text-lg font-medium text-center">No agents found</p>
+                <p className="text-sm text-muted-foreground mt-2 text-center">
                   Add a new sales agent to get started
                 </p>
               </CardContent>
